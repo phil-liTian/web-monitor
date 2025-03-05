@@ -1,2 +1,4 @@
-const a = '123';
-const b = '456';
+/*
+ * @author: phil.li
+ */
+export * from './core/constant';
