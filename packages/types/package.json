@@ -6,6 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "dependencies": {
+    "@webmonitor/common": "workspace:*"
+  },
   "keywords": [],
   "author": "phil",
   "license": "ISC"

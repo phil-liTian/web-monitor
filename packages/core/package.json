@@ -8,7 +8,8 @@
   },
   "dependencies": {
     "@webmonitor/types": "workspace:*",
-    "@webmonitor/common": "workspace:*"
+    "@webmonitor/common": "workspace:*",
+    "@webmonitor/utils": "workspace:*"
   },
   "keywords": [],
   "author": "",
