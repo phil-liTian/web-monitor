@@ -6,14 +6,14 @@ import { ref, h, onMounted } from 'vue';
 import axios from 'axios';
 import { Table, Button, Row, Col } from 'ant-design-vue';
 
-const format = time => {
+const format = (time: string) => {
   let str = new Date(time);
   return str.toLocaleDateString().replace(/\//g, '-') + ' ' + str.toTimeString().substr(0, 8);
 };
 
 const dataList = ref([]);
 const columns = [
-  { title: 'index', dataIndex: 'index', width: '50', key: 'index' },
+  { title: 'index', dataIndex: 'index', width: 50, key: 'index' },
   { title: '报错信息', dataIndex: 'message', key: 'message' },
   { title: '报错页面', dataIndex: 'pageUrl', key: 'pageUrl' },
   { title: '报错时间', dataIndex: 'time', key: 'time' },
@@ -23,9 +23,11 @@ const columns = [
   { title: '浏览器信息', dataIndex: 'deviceInfo', key: 'deviceInfo', width: 240 },
   {
     title: '还原错误代码',
-    fixed: 'right',
+    // fixed: 'right',
     width: 240,
-    customRender: ({ text, record, index }) => {
+    key: 'action',
+    dataIndex: 'action',
+    customRender: () => {
       return h('div', {}, [
         h(Button, { type: 'primary', style: { marginRight: '10px' } }, '查看源码'),
         h(Button, { type: 'primary' }, '播放录屏'),
@@ -87,7 +89,7 @@ const xhrError = () => {
 const getDataList = () => {
   axios.get('http://localhost:3003/getErrorList').then(res => {
     const { data } = res.data;
-    dataList.value = data.map(item => {
+    dataList.value = data.map((item: any) => {
       item.time = format(item.time);
       return item;
     });
