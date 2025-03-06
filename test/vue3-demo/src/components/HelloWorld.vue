@@ -85,7 +85,7 @@ const xhrError = () => {
 };
 
 const getDataList = () => {
-  axios.get('http://localhost:3002/getErrorList').then(res => {
+  axios.get('http://localhost:3003/getErrorList').then(res => {
     const { data } = res.data;
     dataList.value = data.map(item => {
       item.time = format(item.time);
