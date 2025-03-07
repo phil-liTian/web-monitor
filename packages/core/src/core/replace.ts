@@ -26,7 +26,7 @@ export function addReplaceHandler(handler: ReplaceHandler) {
   replace(handler.type);
 }
 
-// 错误处理 window.onerror, 可以捕获语法错误
+// 错误处理 window.onerror, 可以捕获js语法错误
 function listenError(): void {
   on(
     _global,
@@ -58,8 +58,6 @@ function xhrReplace() {
     'open',
     (originalOpen: voidFunc) => {
       return function (this, ...args: any[]) {
-        console.log('args', this, args);
-
         this.webmonitor_xhr = {
           method: veriableTypeDetection.isString(args[0]) ? args[0].toUpperCase() : args[0],
           url: args[1],
@@ -76,13 +74,11 @@ function xhrReplace() {
   // 重写xhr send方法
   replaceAop(XMLHttpRequest.prototype, 'send', (originalSend: voidFunc) => {
     return function (this, ...args: any[]) {
-      console.log('args', this, args);
-
-      // this.webmonitor_xhr.data = args[0];
-
       on(this, 'loadend', function (this: any) {
+        const { status } = this;
         const eTime = getTimestamp();
-        console.log('loadend', this);
+        this.webmonitor_xhr.time = this.webmonitor_xhr.sTime;
+        this.webmonitor_xhr.Status = status;
         // 接口的执行时长
         this.webmonitor_xhr.elapsedTime = eTime - this.webmonitor_xhr.sTime;
         notify(EVENTTYPES.XHR, this.webmonitor_xhr);

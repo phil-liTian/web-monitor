@@ -27,7 +27,6 @@ export function setupReplace(): void {
   addReplaceHandler({
     type: EVENTTYPES.XHR,
     callback: data => {
-      console.log('xhr 错误', data);
       HandleEvents.handleHttp(data);
     },
   });

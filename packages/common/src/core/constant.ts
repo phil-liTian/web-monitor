@@ -51,3 +51,8 @@ export enum SpanStatus {
   OutOfRange = 'out_of_range',
   DataLoss = 'data_loss',
 }
+
+export enum HTTPCODE {
+  BAD_REQUEST = 400,
+  UNAUTHORIZED = 401,
+}

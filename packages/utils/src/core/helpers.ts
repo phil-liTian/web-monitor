@@ -3,6 +3,13 @@
  */
 import type { CallBack, IAnyObject } from '@webmonitor/types';
 import { error } from './error';
+import { veriableTypeDetection } from './verifyType';
+
+// 获取pageUrl
+export function getLocationHref() {
+  if (typeof document === 'undefined' || !document.location) return '';
+  return document.location.href;
+}
 
 export function on(target: any, eventName: string, handler: CallBack, options = false) {
   target.addEventListener(eventName, handler, options);
@@ -45,4 +52,13 @@ export function replaceAop(
       source[name] = wrapped;
     }
   }
+}
+
+// 截取字符串
+export function interceptStr(str: string, len: number) {
+  if (veriableTypeDetection.isString(str)) {
+    return str.slice(0, len) + (str.length > len ? '...' : '');
+  }
+
+  return '';
 }

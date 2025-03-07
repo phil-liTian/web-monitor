@@ -6,7 +6,7 @@ import type { ErrorTarget, HttpData } from '@webmonitor/types';
 import { transportData } from './index';
 import { EVENTTYPES, STATUSCODE } from '@webmonitor/common';
 import { getTimestamp } from '@webmonitor/utils';
-import { httpTransform } from './transformData';
+import { httpTransform, resourceTransform } from './transformData';
 const HandleEvents = {
   // js 语法错误 或者 vue捕获到的错误
   handleError(event: ErrorTarget): void {
@@ -26,6 +26,16 @@ const HandleEvents = {
       };
 
       transportData.send(errorData);
+    }
+
+    // 资源加载错误
+    if (target?.localName) {
+      const data = resourceTransform(target);
+      transportData.send({
+        ...data,
+        type: EVENTTYPES.RESOURCE,
+        status: STATUSCODE.ERROR,
+      });
     }
   },
 
@@ -49,7 +59,6 @@ const HandleEvents = {
 
   // 处理http api请求
   handleHttp(data: HttpData) {
-    console.log('data---->', data);
     const result = httpTransform(data);
 
     if (result.status === STATUSCODE.ERROR) {
