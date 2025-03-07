@@ -7,11 +7,14 @@ import { _support, validateOption } from '@webmonitor/utils';
 
 export class Options {
   overTime = 10; // 超时事件, 默认是10s
+  throttleDelayTime = 0;
   constructor() {}
 
   bindOptions(options: InitOptions) {
-    const { overTime } = options;
+    const { overTime, throttleDelayTime } = options;
     validateOption(overTime, 'overTime', 'number') && (this.overTime = overTime || 0);
+    validateOption(this.throttleDelayTime, 'throttleDelayTime', 'number') &&
+      (this.throttleDelayTime = throttleDelayTime || 0);
   }
 }
 
@@ -23,3 +26,5 @@ export function handleOptions(parmasOptions: InitOptions) {
   // 给options绑定属性(挂载配置性的一些属性)
   options.bindOptions(parmasOptions);
 }
+
+export { options };

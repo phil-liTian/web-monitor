@@ -11,6 +11,10 @@ const format = (time: string) => {
   return str.toLocaleDateString().replace(/\//g, '-') + ' ' + str.toTimeString().substr(0, 8);
 };
 
+const handleClick = type => {
+  console.log('type', type);
+};
+
 const dataList = ref([]);
 const columns = [
   { title: '序号', dataIndex: 'index', width: 50, key: 'index' },
@@ -25,13 +29,14 @@ const columns = [
   {
     title: '还原错误代码',
     // fixed: 'right',
-    width: 240,
+    width: 400,
     key: 'action',
     dataIndex: 'action',
     customRender: () => {
       return h('div', {}, [
         h(Button, { type: 'primary', style: { marginRight: '10px' } }, () => '查看源码'),
-        h(Button, { type: 'primary' }, () => '播放录屏'),
+        h(Button, { type: 'primary', style: { marginRight: '10px' } }, () => '播放录屏'),
+        h(Button, { type: 'primary', onClick: handleClick.bind('detail') }, () => '查看用户行为'),
       ]);
     },
   },
@@ -88,7 +93,7 @@ const xhrError = () => {
 };
 
 const getDataList = () => {
-  axios.get('http://localhost:3003/getErrorList').then(res => {
+  axios.get('http://localhost:3005/getErrorList').then(res => {
     const { data } = res.data;
     dataList.value = data.map((item: any, index: number) => {
       item.time = format(item.time);
@@ -116,6 +121,7 @@ onMounted(() => {
       <Col><Button type="primary" @click="asyncError">异步错误</Button></Col>
       <Col><Button type="primary" @click="resourceError">资源加载错误</Button></Col>
       <Col><Button type="primary" @click="xhrError">xhrError</Button></Col>
+      <!-- <Col><Button type="primary" @click="forward">前进</Button></Col> -->
     </Row>
 
     <Table :columns="columns" :dataSource="dataList" />

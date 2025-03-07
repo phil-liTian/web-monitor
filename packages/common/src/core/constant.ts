@@ -56,3 +56,12 @@ export enum HTTPCODE {
   BAD_REQUEST = 400,
   UNAUTHORIZED = 401,
 }
+
+export enum BREADCRUMBTYPES {
+  HTTP = 'http',
+  CLICK = 'click',
+  RESOURCE = 'Resource_Error',
+  CODEERROR = 'Code_Error',
+  ROUTE = 'Route',
+  CUSTOM = 'Custom',
+}

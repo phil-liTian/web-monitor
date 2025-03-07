@@ -29,4 +29,13 @@ export function getGlobalSupport() {
   return _global.__webMonitor__;
 }
 
+export function supportsHistory(): boolean {
+  const chrome = _global.chrome;
+  const isChromePackagedApp = chrome && chrome.app && chrome.app.runtime;
+  const hasHistoryApi =
+    'history' in _global && !!_global.history.pushState && !!_global.history.replaceState;
+
+  return !isChromePackagedApp && hasHistoryApi;
+}
+
 export { _support, _global };

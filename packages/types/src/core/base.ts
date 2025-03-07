@@ -1,16 +1,14 @@
 /*
  * @author: phil.li
  */
-/*
- * @author: phil.li
- */
-import { EVENTTYPES } from '@webmonitor/common';
+import { BREADCRUMBTYPES, EVENTTYPES, STATUSCODE } from '@webmonitor/common';
 export interface ReportData {
-  type: string; // 事件类型
+  type: EVENTTYPES; // 事件类型
   pageUrl: string; // 页面地址
   time: number; // 发生时间
   uuid: string; // 页面唯一标识
   sdkVersion: string; // sdk版本号
+  breadcrumb?: BreadcrumbData[]; // 用户行为栈信息
   deviceInfo: {
     browserVersion: string;
     browserName: string;
@@ -25,6 +23,13 @@ export interface ReportData {
 
 export interface Window {
   history: any;
+  onpopstate: any;
+  chrome: {
+    app: {
+      [key: string]: any;
+    };
+  };
+
   __webMonitor__: {
     [key: string]: any;
   };
@@ -75,4 +80,17 @@ export interface HttpData {
   message?: string; // 接口信息
   time?: number; // 接口耗时
   elapsedTime?: number;
+}
+
+export interface BreadcrumbData {
+  type: EVENTTYPES; // 事件类型
+  status: STATUSCODE; // 用户行为状态
+  time: number; // 发生时间
+  category?: BREADCRUMBTYPES; // 用户行为类型
+  data: any;
+}
+
+export interface RouteHistory {
+  from: string;
+  to: string;
 }

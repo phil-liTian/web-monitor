@@ -3,7 +3,8 @@
  */
 import type { InitOptions, ReportData } from '@webmonitor/types';
 import { validateOption, _support, getLocationHref, error } from '@webmonitor/utils';
-import { SDK_VERSION } from '@webmonitor/common';
+import { EVENTTYPES, SDK_VERSION } from '@webmonitor/common';
+import { breadcrumb } from './breadCrumb';
 export class TransportData {
   uuid: string;
   userId: string = ''; // 用户id
@@ -38,13 +39,24 @@ export class TransportData {
   }
 
   // 添加一些公共的信息
-  getTransportData(data: any): ReportData {
+  getTransportData(data: ReportData): ReportData {
     const info = {
       ...data,
       ...this.getAuthInfo(),
       pageUrl: getLocationHref(),
       deviceInfo: _support.deviceInfo, // 获取设备信息
     };
+
+    // 记录客户调用栈的信息, 性能数据、录屏、白屏检测等不需要附带用户行为
+    const ExcludeBreadcrumbTypes = [
+      EVENTTYPES.PERFORMANCE,
+      EVENTTYPES.RECORDSCREEN,
+      EVENTTYPES.WHITESCREEN,
+    ];
+
+    if (!ExcludeBreadcrumbTypes.includes(data.type)) {
+      info.breadcrumb = breadcrumb.getStack();
+    }
 
     return info;
   }

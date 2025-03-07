@@ -30,4 +30,28 @@ export function setupReplace(): void {
       HandleEvents.handleHttp(data);
     },
   });
+
+  // 监听click事件, 用于记录用户行为
+  addReplaceHandler({
+    type: EVENTTYPES.CLICK,
+    callback: data => {
+      HandleEvents.handleClick(data);
+    },
+  });
+
+  // 监听hash变化，用于记录用户行为
+  addReplaceHandler({
+    type: EVENTTYPES.HASHCHANGE,
+    callback: data => {
+      HandleEvents.handleHashChange(data);
+    },
+  });
+
+  // 监听history路由变化，用于记录用户行为
+  addReplaceHandler({
+    type: EVENTTYPES.HISTORY,
+    callback: data => {
+      HandleEvents.handleHistory(data);
+    },
+  });
 }

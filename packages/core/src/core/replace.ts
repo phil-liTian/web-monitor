@@ -3,8 +3,16 @@
  */
 import { EVENTTYPES, HTTPTYPE } from '@webmonitor/common';
 import type { ReplaceHandler, voidFunc } from '@webmonitor/types';
-import { _global, getTimestamp, replaceAop, veriableTypeDetection } from '@webmonitor/utils';
-import { on } from '@webmonitor/utils';
+import {
+  _global,
+  getLocationHref,
+  getTimestamp,
+  replaceAop,
+  throttleFn,
+  veriableTypeDetection,
+} from '@webmonitor/utils';
+import { on, supportsHistory } from '@webmonitor/utils';
+import { options } from './index';
 import { notify, subscribeEvent } from './subscribe';
 
 function replace(type: EVENTTYPES) {
@@ -17,6 +25,15 @@ function replace(type: EVENTTYPES) {
       break;
     case EVENTTYPES.XHR:
       xhrReplace();
+      break;
+    case EVENTTYPES.CLICK:
+      domReplace();
+      break;
+    case EVENTTYPES.HASHCHANGE:
+      listenHashChange();
+      break;
+    case EVENTTYPES.HISTORY:
+      listenHistoryChange();
       break;
   }
 }
@@ -87,4 +104,61 @@ function xhrReplace() {
       originalSend.apply(this, args);
     };
   });
+}
+
+// 处理dom事件 点击
+function domReplace(): void {
+  if (!('document' in _global)) return;
+  const clickThrottle = throttleFn(notify, options.throttleDelayTime);
+
+  on(
+    _global.document,
+    'click',
+    function (this: any) {
+      // notify(EVENTTYPES.CLICK, this);
+      clickThrottle(EVENTTYPES.CLICK, this);
+    },
+    true,
+  );
+}
+
+function listenHashChange() {
+  if (!('onhashchange' in _global)) return;
+  on(_global, 'hashchange', function (e) {
+    notify(EVENTTYPES.HASHCHANGE, e);
+  });
+}
+
+let lastHref: string = getLocationHref();
+
+function listenHistoryChange() {
+  if (!supportsHistory()) return;
+
+  const oldOnpopstate = _global.onpopstate;
+  // console.log('oldOnpopstate', oldOnpopstate);
+
+  function historyReplaceFn(originalHistoryFn: voidFunc) {
+    return function (this: any, ...args: any) {
+      const url = args.length > 2 ? args[2] : undefined;
+      if (url) {
+        const from = lastHref;
+        const to = url;
+        lastHref = to;
+        notify(EVENTTYPES.HISTORY, {
+          from,
+          to,
+        });
+      }
+
+      return originalHistoryFn.apply(this, args);
+    };
+  }
+
+  _global.onpopstate = function (this, ...args: any) {
+    console.log('aaa');
+  };
+
+  // 重写pushState & replaceState
+  replaceAop(_global.history, 'pushState', historyReplaceFn);
+  replaceAop(_global.history, 'replaceState', historyReplaceFn);
 }
