@@ -14,7 +14,6 @@ const HandleEvents = {
     const target = event.target;
     if (!target || (target && !target.localName)) {
       const stackFrame = ErrorStackParser.parse(!target ? event : event.error)[0];
-
       const { columnNumber, lineNumber, fileName } = stackFrame;
       const errorData = {
         type: EVENTTYPES.ERROR,
@@ -124,6 +123,7 @@ const HandleEvents = {
     const { oldURL, newURL } = data;
     const { relative: to } = parseUrlToObj(newURL);
     const { relative: from } = parseUrlToObj(oldURL);
+    if (to === from) return;
 
     breadcrumb.push({
       type: EVENTTYPES.HASHCHANGE,
@@ -142,6 +142,7 @@ const HandleEvents = {
     const { from, to } = data;
     const { relative: parsedTo } = parseUrlToObj(to);
     const { relative: parsedFrom } = parseUrlToObj(from);
+    if (parsedTo === parsedFrom) return;
     breadcrumb.push({
       type: EVENTTYPES.HISTORY,
       status: STATUSCODE.OK,

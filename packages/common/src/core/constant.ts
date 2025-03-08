@@ -58,8 +58,8 @@ export enum HTTPCODE {
 }
 
 export enum BREADCRUMBTYPES {
-  HTTP = 'http',
-  CLICK = 'click',
+  HTTP = 'Http',
+  CLICK = 'Click',
   RESOURCE = 'Resource_Error',
   CODEERROR = 'Code_Error',
   ROUTE = 'Route',

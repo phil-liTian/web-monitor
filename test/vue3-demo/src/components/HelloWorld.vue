@@ -5,16 +5,34 @@
 import { ref, h, onMounted } from 'vue';
 import axios from 'axios';
 import { Table, Button, Row, Col } from 'ant-design-vue';
+import SourceCodeModal from './SourceCodeModal.vue';
+import BreadcrumbModal from './BreadcrumbModal.vue';
+import { format } from '../utils/index';
+const showSourceCode = ref(false);
+const recordInfo = ref({});
+// const showScreenPlay = ref(false);
+const showBreadcrumb = ref(false);
 
-const format = (time: string) => {
-  let str = new Date(time);
-  return str.toLocaleDateString().replace(/\//g, '-') + ' ' + str.toTimeString().substr(0, 8);
+const handleClick = (type, record: any) => {
+  recordInfo.value = record;
+  switch (type) {
+    case 'sourceCode':
+      showSourceCode.value = true;
+      break;
+    case 'detail':
+      showBreadcrumb.value = true;
+      break;
+
+    default:
+      break;
+  }
 };
 
-const handleClick = type => {
-  console.log('type', type);
-};
-
+const buttons = [
+  { label: '查看源码', key: 'sourceCode' },
+  { label: '播放录屏', key: 'playScreen' },
+  { label: '查看用户行为', key: 'detail' },
+];
 const dataList = ref([]);
 const columns = [
   { title: '序号', dataIndex: 'index', width: 50, key: 'index' },
@@ -32,12 +50,22 @@ const columns = [
     width: 400,
     key: 'action',
     dataIndex: 'action',
-    customRender: () => {
-      return h('div', {}, [
-        h(Button, { type: 'primary', style: { marginRight: '10px' } }, () => '查看源码'),
-        h(Button, { type: 'primary', style: { marginRight: '10px' } }, () => '播放录屏'),
-        h(Button, { type: 'primary', onClick: handleClick.bind('detail') }, () => '查看用户行为'),
-      ]);
+    customRender: ({ record }) => {
+      return h(
+        'div',
+        {},
+        buttons.map(item => {
+          return h(
+            Button,
+            {
+              type: 'primary',
+              style: { marginRight: '10px' },
+              onClick: () => handleClick(item.key, record),
+            },
+            () => item.label,
+          );
+        }),
+      );
     },
   },
 ];
@@ -125,6 +153,8 @@ onMounted(() => {
     </Row>
 
     <Table :columns="columns" :dataSource="dataList" />
+    <SourceCodeModal v-model:visible="showSourceCode" :record="recordInfo" />
+    <BreadcrumbModal v-model:visible="showBreadcrumb" :record="recordInfo" />
   </div>
 </template>
 

@@ -134,7 +134,7 @@ let lastHref: string = getLocationHref();
 function listenHistoryChange() {
   if (!supportsHistory()) return;
 
-  const oldOnpopstate = _global.onpopstate;
+  // const oldOnpopstate = _global.onpopstate;
   // console.log('oldOnpopstate', oldOnpopstate);
 
   function historyReplaceFn(originalHistoryFn: voidFunc) {
@@ -155,7 +155,7 @@ function listenHistoryChange() {
   }
 
   _global.onpopstate = function (this, ...args: any) {
-    console.log('aaa');
+    console.log('aaa', args);
   };
 
   // 重写pushState & replaceState

@@ -17,6 +17,8 @@ export class Breadcrumb {
       case EVENTTYPES.ERROR:
       case EVENTTYPES.UNHANDLEDREJECTION:
         return BREADCRUMBTYPES.CODEERROR;
+      case EVENTTYPES.CLICK:
+        return BREADCRUMBTYPES.CLICK;
       // 资源加载异常
       case EVENTTYPES.RESOURCE:
         return BREADCRUMBTYPES.RESOURCE;
@@ -25,6 +27,7 @@ export class Breadcrumb {
       case EVENTTYPES.FETCH:
         return BREADCRUMBTYPES.HTTP;
       case EVENTTYPES.HASHCHANGE:
+      case EVENTTYPES.HISTORY:
         return BREADCRUMBTYPES.ROUTE;
     }
   }

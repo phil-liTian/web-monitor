@@ -63,7 +63,6 @@ export class TransportData {
 
   beforePost(data: ReportData) {
     const transportData = this.getTransportData(data);
-    console.log('transportData', transportData);
     return transportData;
   }
 
@@ -79,6 +78,8 @@ export class TransportData {
     const dsn = this.errorDsn;
     const result = this.beforePost(data);
     const value = this.beacon(dsn, result);
+    if (!value) {
+    }
   }
 }
 
