@@ -6,7 +6,13 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const coBody = require('co-body');
 const path = require('path');
+const serveStatic = require('serve-static');
+const { default: axios } = require('axios');
 const app = express();
+
+// 
+const rootPath = path.join(__dirname, 'dist');
+app.use(serveStatic(rootPath));
 app.use(bodyParser.json( { limit: '100mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '100mb', parameterLimit: 50000 }));
 
@@ -36,15 +42,30 @@ app.get('/getErrorList', (req, res) => {
 // 获取js.map源码文件
 app.get('/getJsMap', (req, res) => {
   const { fileName } = req.query;
-  const mapFile = path.join(__dirname, '..', 'dist/js')
-  console.log('mapFile', mapFile);
+  if (!fileName) {
+    res.send({
+      code: 400,
+      data: '获取失败'
+    })
+    return
+  }
   
-
-  // const jsMap = fs.readFileSync(`./${name}.map`, 'utf-8');
-  // res.send({
-  //   code: 200,
-  //   data: jsMap
-  // })
+  const mapFile = path.join(__dirname, 'dist/assets')
+  let mapPath = path.join(mapFile, `${fileName}.map`);
+  fs.readFile(mapPath, 'utf-8', (err, data) => {
+    if (err) {
+      console.log(err);
+      res.send({
+        code: 400,
+        data: '获取失败'
+      })
+    } else {
+      res.send({
+        code: 200,
+        data: data
+      })
+    }
+  })
 })
 
 // 错误上报
