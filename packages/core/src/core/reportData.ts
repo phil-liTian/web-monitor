@@ -5,6 +5,7 @@ import type { InitOptions, ReportData } from '@webmonitor/types';
 import { validateOption, _support, getLocationHref, error } from '@webmonitor/utils';
 import { EVENTTYPES, SDK_VERSION } from '@webmonitor/common';
 import { breadcrumb } from './breadCrumb';
+import { options } from './options';
 export class TransportData {
   uuid: string;
   userId: string = ''; // 用户id
@@ -74,11 +75,33 @@ export class TransportData {
     validateOption(getUserId, 'getUserId', 'function') && (this.getUserId = getUserId);
   }
 
+  xhrPost(data: ReportData, url: string) {
+    const requestFn = () => {
+      fetch(`${url}`, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    };
+
+    requestFn();
+  }
+
   send(data: ReportData) {
     const dsn = this.errorDsn;
+    if (_support.options.silentRecordScreen) {
+      if (options.recordScreenTypeList.includes(data.type)) {
+        _support.hasError = true;
+        data.recordScreenId = _support.recordScreenId;
+      }
+    }
+
     const result = this.beforePost(data);
     const value = this.beacon(dsn, result);
     if (!value) {
+      return this.xhrPost(result, dsn);
     }
   }
 }

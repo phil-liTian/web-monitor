@@ -1,6 +1,9 @@
 /*
  * @author: phil.li
  */
+/*
+ * @author: phil.li
+ */
 import { UAParser } from 'ua-parser-js';
 import type { Window } from '@webmonitor/types';
 export function getGlobal(): Window {
@@ -23,6 +26,8 @@ _support.deviceInfo = {
   deviceType: uaResult.device.type || 'Pc', // 设备类型
   deviceVendor: uaResult.device.vendor || 'Unkown', // 设备厂商
 };
+
+_support.hasError = false;
 
 export function getGlobalSupport() {
   _global.__webMonitor__ = {};

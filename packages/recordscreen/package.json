@@ -7,6 +7,14 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
+  "dependencies": {
+    "@webmonitor/common": "workspace:*",
+    "@webmonitor/types": "workspace:*",
+    "@webmonitor/utils": "workspace:*",
+    "js-base64": "^3.7.7",
+    "pako": "^2.1.0",
+    "rrweb": "2.0.0-alpha.4"
+  },
   "author": "",
   "license": "ISC"
 }

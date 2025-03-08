@@ -33,6 +33,8 @@ app.all('*', function (res, req, next) {
 
 // 获取错误列表
 app.get('/getErrorList', (req, res) => {
+  console.log('recordScreenList', recordScreenList);
+  
   res.send({
     code: 200,
     data: errorList
@@ -68,10 +70,41 @@ app.get('/getJsMap', (req, res) => {
   })
 })
 
+app.get('/getRecordScreenId', (req, res) => {
+  const { id } = req.query;
+  const data = recordScreenList.find(item => item.recordScreenId === id);
+  console.log('data', data);
+  
+  res.send({
+    code: 200,
+    data
+  })
+})
+
+
 // 错误上报
 app.post('/reportData', async (req, res) => {
-  const data = await coBody.json(req)
-  errorList.push(data);
+  const length = Object.keys(req.body).length;
+  console.log('length', length);
+
+  if ( length ) {
+    console.log('asda');
+    recordScreenList.push(req.body)
+  } else {
+    const data = await coBody.json(req)
+    if ( !data ) return
+
+    if (data.type === 'recordScreen') {
+      
+      recordScreenList.push(data)
+    } else {
+      errorList.push(data);
+    }
+  }
+  
+
+
+  
 
   res.send({
     code: 200,

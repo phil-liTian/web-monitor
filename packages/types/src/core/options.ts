@@ -9,3 +9,8 @@ export interface InitOptions {
   overTime?: number; // 超时时间
   throttleDelayTime?: number; // 防抖延迟执行时间
 }
+
+export interface RecordScreenOption {
+  recordScreenTypeList: string[];
+  recordScreenTime: number;
+}

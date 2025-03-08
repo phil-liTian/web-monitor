@@ -7,10 +7,11 @@ import axios from 'axios';
 import { Table, Button, Row, Col } from 'ant-design-vue';
 import SourceCodeModal from './SourceCodeModal.vue';
 import BreadcrumbModal from './BreadcrumbModal.vue';
+import ScreenplayModal from './ScreenplayModal.vue';
 import { format } from '../utils/index';
 const showSourceCode = ref(false);
 const recordInfo = ref({});
-// const showScreenPlay = ref(false);
+const showScreenPlay = ref(false);
 const showBreadcrumb = ref(false);
 
 const handleClick = (type, record: any) => {
@@ -22,7 +23,9 @@ const handleClick = (type, record: any) => {
     case 'detail':
       showBreadcrumb.value = true;
       break;
-
+    case 'playScreen':
+      showScreenPlay.value = true;
+      break;
     default:
       break;
   }
@@ -155,6 +158,7 @@ onMounted(() => {
     <Table :columns="columns" :dataSource="dataList" />
     <SourceCodeModal v-model:visible="showSourceCode" :record="recordInfo" />
     <BreadcrumbModal v-model:visible="showBreadcrumb" :record="recordInfo" />
+    <ScreenplayModal v-model:visible="showScreenPlay" :record="recordInfo" />
   </div>
 </template>
 

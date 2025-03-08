@@ -40,7 +40,6 @@ const timeLineData = ref<{ content: string; color: string; time: string }[]>([])
 const emits = defineEmits(['update:visible']);
 
 const getBreadcrumbData = () => {
-  console.log('props', props.record.breadcrumb);
   timeLineData.value = (props.record.breadcrumb || []).map(item => {
     item.color = item.status === 'ok' ? 'green' : 'red';
     if (item.category === 'Http') {
