@@ -8,13 +8,24 @@ import { _support, validateOption } from '@webmonitor/utils';
 export class Options {
   overTime = 10; // 超时事件, 默认是10s
   throttleDelayTime = 0;
+  whiteBoxElements: string[] = [];
+  skeletonProject = false;
   constructor() {}
 
   bindOptions(options: InitOptions) {
-    const { overTime, throttleDelayTime } = options;
+    const {
+      overTime,
+      throttleDelayTime,
+      skeletonProject,
+      whiteBoxElements = ['html', 'body', '#app', '#root'],
+    } = options;
     validateOption(overTime, 'overTime', 'number') && (this.overTime = overTime || 0);
     validateOption(this.throttleDelayTime, 'throttleDelayTime', 'number') &&
       (this.throttleDelayTime = throttleDelayTime || 0);
+    validateOption(whiteBoxElements, 'whiteBoxElements', 'array') &&
+      (this.whiteBoxElements = whiteBoxElements || []);
+    validateOption(skeletonProject, 'skeletonProject', 'boolean') &&
+      (this.skeletonProject = skeletonProject || false);
   }
 }
 

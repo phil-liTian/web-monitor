@@ -22,6 +22,8 @@ let errorList = [];
 let performanceList = [];
 // 存储录屏数据
 let recordScreenList = [];
+// 白屏数据
+let whiteScreenList = [];
 
 app.all('*', function (res, req, next) {
   req.header('Access-Control-Allow-Origin', '*');
@@ -33,8 +35,6 @@ app.all('*', function (res, req, next) {
 
 // 获取错误列表
 app.get('/getErrorList', (req, res) => {
-  console.log('recordScreenList', recordScreenList);
-  
   res.send({
     code: 200,
     data: errorList
@@ -85,26 +85,24 @@ app.get('/getRecordScreenId', (req, res) => {
 // 错误上报
 app.post('/reportData', async (req, res) => {
   const length = Object.keys(req.body).length;
-  console.log('length', length);
 
   if ( length ) {
-    console.log('asda');
     recordScreenList.push(req.body)
   } else {
     const data = await coBody.json(req)
     if ( !data ) return
 
     if (data.type === 'recordScreen') {
-      
+      // 录屏数据
       recordScreenList.push(data)
+    } else if ( data.type === 'whiteScreen' ) {
+       whiteScreenList.push(data)
     } else {
       errorList.push(data);
     }
   }
   
 
-
-  
 
   res.send({
     code: 200,
@@ -113,5 +111,5 @@ app.post('/reportData', async (req, res) => {
 })
 
 app.listen(3005, () => {
-  console.log('Example app listening on port 3005!');
+  console.log('Example app listening on port: http://localhost:3005!');
 });

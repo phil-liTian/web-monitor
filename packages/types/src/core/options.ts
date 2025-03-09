@@ -8,6 +8,8 @@ export interface InitOptions {
   getUserId?: () => string; // 用户唯一标识
   overTime?: number; // 超时时间
   throttleDelayTime?: number; // 防抖延迟执行时间
+  skeletonProject?: boolean; // 是否开启骨架屏
+  whiteBoxElements?: string[]; // 容器列表 默认['html', 'body', '#app', '#root']
 }
 
 export interface RecordScreenOption {

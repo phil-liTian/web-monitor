@@ -25,6 +25,9 @@ export interface ReportData {
 export interface Window {
   history: any;
   onpopstate: any;
+  addEventListener: any;
+  innerWidth: number;
+  innerHeight: number;
   chrome: {
     app: {
       [key: string]: any;

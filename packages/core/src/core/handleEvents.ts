@@ -8,6 +8,7 @@ import { EVENTTYPES, STATUSCODE } from '@webmonitor/common';
 import { getTimestamp, htmlElementAsString, parseUrlToObj } from '@webmonitor/utils';
 import { httpTransform, resourceTransform } from './transformData';
 import { breadcrumb } from './breadCrumb';
+import { openWhiteScreen } from './whitescreen';
 const HandleEvents = {
   // js 语法错误 或者 vue捕获到的错误
   handleError(event: ErrorTarget): void {
@@ -153,6 +154,17 @@ const HandleEvents = {
       },
       category: breadcrumb.getCategory(EVENTTYPES.HISTORY),
     });
+  },
+
+  // 处理白屏问题
+  handleWhiteScreen(): void {
+    openWhiteScreen(res => {
+      transportData.send({
+        type: EVENTTYPES.WHITESCREEN,
+        time: getTimestamp(),
+        ...(res || {}),
+      });
+    }, options);
   },
 };
 

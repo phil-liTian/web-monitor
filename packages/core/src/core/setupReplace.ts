@@ -54,4 +54,12 @@ export function setupReplace(): void {
       HandleEvents.handleHistory(data);
     },
   });
+
+  // 监听页面白屏
+  addReplaceHandler({
+    type: EVENTTYPES.WHITESCREEN,
+    callback: () => {
+      HandleEvents.handleWhiteScreen();
+    },
+  });
 }

@@ -35,6 +35,9 @@ function replace(type: EVENTTYPES) {
     case EVENTTYPES.HISTORY:
       listenHistoryChange();
       break;
+    case EVENTTYPES.WHITESCREEN:
+      whiteScreen();
+      break;
   }
 }
 
@@ -161,4 +164,8 @@ function listenHistoryChange() {
   // 重写pushState & replaceState
   replaceAop(_global.history, 'pushState', historyReplaceFn);
   replaceAop(_global.history, 'replaceState', historyReplaceFn);
+}
+
+function whiteScreen() {
+  notify(EVENTTYPES.WHITESCREEN);
 }

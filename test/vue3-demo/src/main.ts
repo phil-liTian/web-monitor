@@ -13,6 +13,7 @@ app.use(webMonitor, {
   dsn: 'http://localhost:3005/reportData',
   apikey: 'vue3-project',
   userId: 'phil.li',
+  skeletonProject: true, // 使用了骨架屏
 });
 
 // 使用录屏插件
