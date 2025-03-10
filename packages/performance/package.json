@@ -6,7 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "devDependencies": {
+    "@webmonitor/common": "workspace:*",
+    "@webmonitor/types": "workspace:*",
+    "@webmonitor/utils": "workspace:*"
+  },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "web-vitals": "^4.2.4"
+  }
 }

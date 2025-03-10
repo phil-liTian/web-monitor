@@ -4,7 +4,7 @@
 <script setup lang="tsx">
 import { ref, h, onMounted } from 'vue';
 import axios from 'axios';
-import { Table, Button, Row, Col } from 'ant-design-vue';
+import { Table, Button, Row, Col, Input } from 'ant-design-vue';
 import SourceCodeModal from './SourceCodeModal.vue';
 import BreadcrumbModal from './BreadcrumbModal.vue';
 import ScreenplayModal from './ScreenplayModal.vue';
@@ -152,6 +152,7 @@ onMounted(() => {
       <Col><Button type="primary" @click="asyncError">异步错误</Button></Col>
       <Col><Button type="primary" @click="resourceError">资源加载错误</Button></Col>
       <Col><Button type="primary" @click="xhrError">xhrError</Button></Col>
+      <Col> <Input /> </Col>
       <!-- <Col><Button type="primary" @click="forward">前进</Button></Col> -->
     </Row>
 

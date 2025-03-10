@@ -28,6 +28,7 @@ export interface Window {
   addEventListener: any;
   innerWidth: number;
   innerHeight: number;
+  performance: any;
   chrome: {
     app: {
       [key: string]: any;
@@ -105,4 +106,14 @@ export interface SdkBase {
   breadcrumb: any; // 用户行为
   options: any; // 公共配置
   notify: any; // 发布消息
+}
+
+export abstract class BasePlugin {
+  public type: string; // 插件类型
+  constructor(type: string) {
+    this.type = type;
+  }
+  abstract bindOptions(params: any): void; // 绑定配置
+  abstract core(sdk: SdkBase): void; // 核心方法
+  abstract transform(data: any): any; // 数据转化
 }
