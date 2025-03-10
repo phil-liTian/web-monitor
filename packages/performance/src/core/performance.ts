@@ -71,7 +71,6 @@ function observeFirstScreenPaint(callback: CallBack) {
     for (const mutation of mutationsList) {
       if (mutation.addedNodes.length && isInScreen(mutation.target)) {
         for (const node of mutation.addedNodes) {
-          console.log('node--->', node, node.nodeType);
           // 忽略一些dom节点，只处理元素节点
           if (node.nodeType === 1 && !ignoreDOMList.includes(node.nodeName) && isInScreen(node)) {
             entry.children.push(node as never);
