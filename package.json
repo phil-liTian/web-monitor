@@ -1,13 +1,18 @@
 {
   "name": "@phil1123/web-monitor",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky"
   },
-  "keywords": ["web-monitor", "phil1123", "monitor", "监控"],
+  "keywords": [
+    "web-monitor",
+    "phil1123",
+    "monitor",
+    "监控"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
