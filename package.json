@@ -1,5 +1,5 @@
 {
-  "name": "web-monitor",
+  "name": "@phil1123/web-monitor",
   "version": "1.0.1",
   "description": "",
   "main": "index.js",
@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky"
   },
-  "keywords": [],
+  "keywords": ["web-monitor", "phil1123", "monitor", "监控"],
   "author": "",
   "license": "ISC",
   "devDependencies": {

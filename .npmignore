@@ -1,0 +1,8 @@
+node_modules/
+.git/
+.gitignore
+.husky/
+test/
+*.test.js
+*.spec.js
+.DS_Store
