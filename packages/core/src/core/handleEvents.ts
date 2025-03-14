@@ -7,8 +7,8 @@ import { options, transportData } from './index';
 import { EVENTTYPES, STATUSCODE } from '@webmonitor/common';
 import { _support, getErrorUid, getTimestamp, hashMapExist, htmlElementAsString, parseUrlToObj } from '@webmonitor/utils';
 import { httpTransform, resourceTransform } from './transformData';
-import { breadcrumb } from './breadCrumb';
-import { openWhiteScreen } from './whitescreen';
+import { breadcrumb } from './breadcrumb';
+import { openWhiteScreen } from './whiteScreen';
 const HandleEvents = {
   // js 语法错误 或者 vue捕获到的错误
   handleError(event: ErrorTarget): void {

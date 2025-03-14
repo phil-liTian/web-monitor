@@ -7,7 +7,7 @@ import { log } from './core/customLog'
 import { setupReplace } from './core/setupReplace';
 import { HandleEvents } from './core/handleEvents';
 import { transportData } from './core';
-import { breadcrumb } from './core/breadCrumb';
+import { breadcrumb } from './core/breadcrumb';
 import { _global } from '@webmonitor/utils';
 
 function init(options: InitOptions) {

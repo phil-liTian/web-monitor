@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",    // 修改这里
+    "module": "ESNext",           // 修改这里
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "target": "es2016",
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "*": ["*"]
+    }
+  },
+  "include": ["packages/**/*"],
+  "exclude": ["node_modules"]
+}

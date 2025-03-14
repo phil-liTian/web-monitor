@@ -10,7 +10,7 @@ import { _support, getTimestamp, validateOption } from '@webmonitor/utils';
 export class Breadcrumb {
   maxBreadcrumbs = 20;
   stack: BreadcrumbData[] = [];
-  boforePushBreadcrumb: (breadcrumb: BreadcrumbData) => any;
+  boforePushBreadcrumb?: (breadcrumb: BreadcrumbData) => any;
   constructor() {
     this.stack = [];
   }

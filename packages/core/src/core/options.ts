@@ -4,7 +4,7 @@
 import type { InitOptions } from '@webmonitor/types';
 import { transportData } from './reportData';
 import { _support, setSilentFlag, validateOption } from '@webmonitor/utils';
-import { breadcrumb } from './breadCrumb';
+import { breadcrumb } from './breadcrumb';
 
 export class Options {
   overTime = 10; // 超时事件, 默认是10s

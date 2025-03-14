@@ -4,7 +4,7 @@
 import type { InitOptions, ReportData } from '@webmonitor/types';
 import { validateOption, _support, getLocationHref, error } from '@webmonitor/utils';
 import { EVENTTYPES, SDK_VERSION } from '@webmonitor/common';
-import { breadcrumb } from './breadCrumb';
+import { breadcrumb } from './breadcrumb';
 import { options } from './options';
 export class TransportData {
   uuid: string;

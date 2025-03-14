@@ -82,7 +82,7 @@ function xhrReplace() {
     originalXhrProto,
     'open',
     (originalOpen: voidFunc) => {
-      return function (this, ...args: any[]) {
+      return function (this: any, ...args: any[]) {
         this.webmonitor_xhr = {
           method: veriableTypeDetection.isString(args[0]) ? args[0].toUpperCase() : args[0],
           url: args[1],
@@ -98,7 +98,7 @@ function xhrReplace() {
 
   // 重写xhr send方法
   replaceAop(XMLHttpRequest.prototype, 'send', (originalSend: voidFunc) => {
-    return function (this, ...args: any[]) {
+    return function (this: any, ...args: any[]) {
       const { method, url } = this.webmonitor_xhr;
 
 

@@ -115,7 +115,7 @@ export function getTTFB(callback: CallBack) {
 
 // 首个内容渲染时间
 export function getFCP(callback: CallBack) {
-  const entryHandler = list => {
+  const entryHandler = (list: any) => {
     for (let entry of list.getEntries()) {
       if (entry.name === 'first-contentful-paint') {
         observer.disconnect();
@@ -134,7 +134,7 @@ export function getFCP(callback: CallBack) {
 
 // 最大内容绘制的时间
 export function getLCP(callback: CallBack): void {
-  const entryHandler = list => {
+  const entryHandler = (list: any) => {
     for (let entry of list.getEntries()) {
       if (entry.name === 'largest-contentful-paint') {
         observer.disconnect();
@@ -152,7 +152,7 @@ export function getLCP(callback: CallBack): void {
 }
 
 export function getCLS(callback: CallBack): void {
-  const entryHandler = list => {
+  const entryHandler = (list: any) => {
     // TODO
     callback(list.getEntries()[0]);
   };
@@ -162,7 +162,7 @@ export function getCLS(callback: CallBack): void {
 }
 
 export function getFID(callback: CallBack): void {
-  const entryHandler = list => {
+  const entryHandler = (list: any) => {
     for (const entry of list.getEntries()) {
       observer.disconnect();
       const value = entry.processingStart - entry.startTime;

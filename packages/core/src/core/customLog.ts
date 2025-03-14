@@ -4,7 +4,7 @@
 import ErrorStackParser from "error-stack-parser";
 import { EVENTTYPES, STATUSCODE } from "@webmonitor/common";
 import { getTimestamp, isError, unknownToString } from "@webmonitor/utils";
-import { breadcrumb } from "./breadCrumb";
+import { breadcrumb } from "./breadcrumb";
 import { transportData } from "./reportData";
 
 export function log({
