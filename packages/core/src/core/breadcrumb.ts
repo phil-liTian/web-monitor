@@ -1,14 +1,27 @@
 /*
  * @author: phil.li
  */
+/*
+ * @author: phil.li
+ */
 import { BREADCRUMBTYPES, EVENTTYPES } from '@webmonitor/common';
-import type { BreadcrumbData } from '@webmonitor/types';
-import { _support, getTimestamp } from '@webmonitor/utils';
+import type { BreadcrumbData, InitOptions } from '@webmonitor/types';
+import { _support, getTimestamp, validateOption } from '@webmonitor/utils';
 export class Breadcrumb {
   maxBreadcrumbs = 20;
   stack: BreadcrumbData[] = [];
+  boforePushBreadcrumb: (breadcrumb: BreadcrumbData) => any;
   constructor() {
     this.stack = [];
+  }
+
+  bindOptions(options: InitOptions) {
+    const { maxBreadcrumbs, boforePushBreadcrumb } = options;
+    validateOption(maxBreadcrumbs, 'maxBreadcrumbs', 'number') &&
+      (this.maxBreadcrumbs = maxBreadcrumbs || 20);
+
+    validateOption(boforePushBreadcrumb, 'boforePushBreadcrumb', 'function') &&
+      (this.boforePushBreadcrumb = boforePushBreadcrumb as unknown as (breadcrumb: BreadcrumbData) => any);
   }
 
   getCategory(type: EVENTTYPES) {
@@ -33,6 +46,15 @@ export class Breadcrumb {
   }
 
   push(data: BreadcrumbData) {
+
+    // 可自定义用户行为收集的字段及内容
+    if ( typeof this.boforePushBreadcrumb === 'function' ) {
+      const result = this.boforePushBreadcrumb(data);
+      if ( !result ) return
+      this.immediatePush(result);
+      return
+    }
+
     this.immediatePush(data);
   }
 

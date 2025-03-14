@@ -1,18 +1,20 @@
 /*
  * @author: phil.li
  */
-// 前端性能指标：LCP、FID、CLS、TBT、TTI、FCP、TTFB
 import type { VueInstance, ViewModel, InitOptions } from '@webmonitor/types';
 import { handleOptions, options } from './core/options';
+import { log } from './core/customLog'
 import { setupReplace } from './core/setupReplace';
 import { HandleEvents } from './core/handleEvents';
 import { transportData } from './core';
 import { breadcrumb } from './core/breadCrumb';
+import { _global } from '@webmonitor/utils';
 
 function init(options: InitOptions) {
   if (!options.dsn) {
     return console.error('请配置dsn');
   }
+  if ( !('fetch' in _global) || options.disabled ) return
   // 初始化配置
   handleOptions(options);
   setupReplace();
@@ -36,4 +38,5 @@ function use(Plugin: any, option: any) {
 export default {
   install,
   use,
+  log,
 };

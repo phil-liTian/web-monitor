@@ -11,6 +11,7 @@ export class TransportData {
   userId: string = ''; // 用户id
   apikey: string = ''; // 项目唯一标识
   errorDsn: string = ''; // 错误上报的dsn
+  beforeDataReport?: (data: ReportData) => Promise<ReportData | boolean>;
   getUserId?: () => string; // 用户自定义获取userId的方法
   constructor() {
     // 每次页面加载的唯一标识
@@ -62,17 +63,36 @@ export class TransportData {
     return info;
   }
 
+  // 判断请求的接口是否为SDK配置的接口
+  isSdkTransportUrl(url: string) {
+    let isSdkDsn = false;
+    if (this.errorDsn && url.indexOf(this.errorDsn) !== -1) {
+      isSdkDsn = true;
+    }
+
+    return isSdkDsn;
+  }
+
   beforePost(data: ReportData) {
-    const transportData = this.getTransportData(data);
+    let transportData = this.getTransportData(data);
+
+    // 可以自定义上传的数据
+    if (typeof this.beforeDataReport === 'function') {
+      transportData = this.beforeDataReport(transportData) as unknown as ReportData;
+      if ( !transportData ) return false
+    }
+
     return transportData;
   }
 
   bindOptions(options: InitOptions) {
-    const { dsn, userId, apikey, getUserId } = options;
+    const { dsn, userId, apikey, getUserId, beforeDataReport } = options;
     validateOption(dsn, 'dsn', 'string') && (this.errorDsn = options.dsn);
     validateOption(userId, 'userId', 'string') && (this.userId = userId || '');
     validateOption(apikey, 'apikey', 'string') && (this.apikey = apikey || '');
     validateOption(getUserId, 'getUserId', 'function') && (this.getUserId = getUserId);
+    validateOption(beforeDataReport, 'beforeDataReport', 'function') &&
+      (this.beforeDataReport = beforeDataReport);
   }
 
   xhrPost(data: ReportData, url: string) {
@@ -91,6 +111,7 @@ export class TransportData {
 
   send(data: ReportData) {
     const dsn = this.errorDsn;
+    // 是否录屏
     if (_support.options.silentRecordScreen) {
       if (options.recordScreenTypeList.includes(data.type)) {
         _support.hasError = true;
@@ -99,6 +120,7 @@ export class TransportData {
     }
 
     const result = this.beforePost(data);
+    if (!result) return;
     const value = this.beacon(dsn, result);
     if (!value) {
       return this.xhrPost(result, dsn);

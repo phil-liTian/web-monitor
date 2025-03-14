@@ -1,7 +1,7 @@
 /*
  * @author: phil.li
  */
-import { EVENTTYPES, HTTPTYPE } from '@webmonitor/common';
+import { EMethods, EVENTTYPES, HTTPTYPE } from '@webmonitor/common';
 import type { ReplaceHandler, voidFunc } from '@webmonitor/types';
 import {
   _global,
@@ -12,8 +12,13 @@ import {
   veriableTypeDetection,
 } from '@webmonitor/utils';
 import { on, supportsHistory } from '@webmonitor/utils';
-import { options } from './index';
+import { options, transportData } from './index';
 import { notify, subscribeEvent } from './subscribe';
+
+function isFilterHttpUrl(url: string): boolean {
+  return options.filterXhrUrlRegExp && options.filterXhrUrlRegExp.test(url);
+}
+
 
 function replace(type: EVENTTYPES) {
   switch (type) {
@@ -94,7 +99,13 @@ function xhrReplace() {
   // 重写xhr send方法
   replaceAop(XMLHttpRequest.prototype, 'send', (originalSend: voidFunc) => {
     return function (this, ...args: any[]) {
+      const { method, url } = this.webmonitor_xhr;
+
+
       on(this, 'loadend', function (this: any) {
+        // post请求, SDK上报的接口不采集, 满足正则需求的url不上报
+        if ( method === EMethods.Post || transportData.isSdkTransportUrl(url) || isFilterHttpUrl(url) ) return
+        
         const { status } = this;
         const eTime = getTimestamp();
         this.webmonitor_xhr.time = this.webmonitor_xhr.sTime;

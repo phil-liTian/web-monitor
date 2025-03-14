@@ -1,9 +1,6 @@
 /*
  * @author: phil.li
  */
-/*
- * @author: phil.li
- */
 import { UAParser } from 'ua-parser-js';
 import type { Window } from '@webmonitor/types';
 export function getGlobal(): Window {
@@ -28,6 +25,21 @@ _support.deviceInfo = {
 };
 
 _support.hasError = false;
+
+// 存储错误集合，避免相同错误重复上传
+_support.errorMap = new Map();
+// 
+_support.replaceFlag = _support.replaceFlag || {};
+const replaceFlag = _support.replaceFlag;
+
+export function setFlag(replaceType: string, isSet: boolean) {
+  if ( replaceFlag[replaceType] ) return
+  replaceFlag[replaceType] = isSet;
+}
+
+export function getFlag(replaceType: string) {
+  return !!replaceFlag[replaceType];
+}
 
 export function getGlobalSupport() {
   _global.__webMonitor__ = {};

@@ -1,13 +1,12 @@
 /*
  * @author: phil.li
  */
-
 import type { SdkBase } from '@webmonitor/types';
 import { BasePlugin } from '@webmonitor/types';
 import { EVENTTYPES, STATUSCODE } from '@webmonitor/common';
 import { getWebVitals } from './core/performance';
 import { _global, getTimestamp, on } from '@webmonitor/utils';
-
+// 前端性能指标：LCP、FID、CLS、TBT、TTI、FCP、TTFB
 // 性能分析
 export default class WebPerformance extends BasePlugin {
   constructor() {

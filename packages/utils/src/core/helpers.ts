@@ -99,3 +99,12 @@ export function generateUUID() {
 
   return uuid;
 }
+
+export function unknownToString(target: unknown): string {
+  if ( veriableTypeDetection.isString(target) ) {
+    return target as string;
+  } else if (veriableTypeDetection.isUndefined(target)) {
+    return 'undefined';
+  } 
+  return JSON.stringify(target);
+}

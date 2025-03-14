@@ -1,6 +1,9 @@
 /*
  * @author: phil.li
  */
+/*
+ * @author: phil.li
+ */
 // 事件类型
 export enum EVENTTYPES {
   XHR = 'xhr',
@@ -64,4 +67,11 @@ export enum BREADCRUMBTYPES {
   CODEERROR = 'Code_Error',
   ROUTE = 'Route',
   CUSTOM = 'Custom',
+}
+
+export enum EMethods {
+  Get = 'GET',
+  Post = 'POST',
+  Put = 'PUT',
+  Delete = 'DELETE',
 }

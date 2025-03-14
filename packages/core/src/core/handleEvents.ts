@@ -5,7 +5,7 @@ import ErrorStackParser from 'error-stack-parser';
 import type { ErrorTarget, HttpData, RouteHistory } from '@webmonitor/types';
 import { options, transportData } from './index';
 import { EVENTTYPES, STATUSCODE } from '@webmonitor/common';
-import { getTimestamp, htmlElementAsString, parseUrlToObj } from '@webmonitor/utils';
+import { _support, getErrorUid, getTimestamp, hashMapExist, htmlElementAsString, parseUrlToObj } from '@webmonitor/utils';
 import { httpTransform, resourceTransform } from './transformData';
 import { breadcrumb } from './breadCrumb';
 import { openWhiteScreen } from './whitescreen';
@@ -35,7 +35,14 @@ const HandleEvents = {
         status: STATUSCODE.ERROR,
       });
 
-      transportData.send(errorData);
+      const hash: string = getErrorUid(
+        `${EVENTTYPES.ERROR}-${event.message}-${fileName}-${lineNumber}-${columnNumber}`,
+      );
+
+      // 控制重复错误不上报, 如果repeatCodeError为true, 则控制重复错误不上报
+      if (!options.repeatCodeError || (options.repeatCodeError && !hashMapExist(hash))) {
+        transportData.send(errorData);
+      }
     }
 
     // 资源加载错误
@@ -80,6 +87,15 @@ const HandleEvents = {
       time: getTimestamp(),
       status: STATUSCODE.ERROR,
     });
+
+    const hash: string = getErrorUid(
+      `${EVENTTYPES.UNHANDLEDREJECTION}-${message}-${fileName}-${lineNumber}-${columnNumber}`,
+    );
+
+    // 控制重复错误不上报, 如果repeatCodeError为true, 则控制重复错误不上报
+    if (!options.repeatCodeError || (options.repeatCodeError && !hashMapExist(hash))) {
+      transportData.send(data);
+    }
 
     transportData.send(data);
   },
